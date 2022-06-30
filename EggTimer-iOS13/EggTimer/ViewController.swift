@@ -1,4 +1,5 @@
 import UIKit
+import AVFoundation
 
 class ViewController: UIViewController {
         
@@ -9,11 +10,12 @@ class ViewController: UIViewController {
     var seconds = 60
     var totalSeconds = 60
     var timer : Timer = Timer()
+    var soundPlayer: AVAudioPlayer?
 
     @IBAction func onSelect(_ sender: UIButton) {
         
         progressBar.progress = 0.0
-        
+        labelText.text = sender.currentTitle!
         let hardness = sender.currentTitle!
         
         seconds = eggTimes[hardness]!
@@ -31,7 +33,14 @@ class ViewController: UIViewController {
             } else {
                 self.timer.invalidate()
                 self.labelText.text = "DONE"
+                self.alarm()
             }
         }
+    }
+    
+    func alarm() {
+        let url = Bundle.main.url(forResource: "alarm_sound", withExtension: "mp3")
+        soundPlayer = try! AVAudioPlayer(contentsOf: url!)
+        soundPlayer!.play()
     }
 }
